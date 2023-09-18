@@ -33,8 +33,10 @@ public class UserControllerIntegrationTest {
     @BeforeEach
     public void setUp() {
         userRepository.deleteAll();
-        userRepository.save(new User(1, "User1"));
-        userRepository.save(new User(2, "User2"));
+        User userOne = userRepository.save(new User());
+        User userTwo = userRepository.save(new User());
+        userOne.setName("User1");
+        userTwo.setName("User2");
     }
 
     @Test
@@ -60,7 +62,7 @@ public class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     public void testEditUser() throws Exception {
-        User user = userRepository.save(new User(null, "UserToEdit"));
+        User user = userRepository.save(new User());
         mockMvc.perform(MockMvcRequestBuilders.put("/user/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"EditedUser\"}"))
@@ -72,7 +74,7 @@ public class UserControllerIntegrationTest {
     @Test
     @WithMockUser
     public void testDeleteUser() throws Exception {
-        User user = userRepository.save(new User(4, "UserToDelete"));
+        User user = userRepository.save(new User());
         mockMvc.perform(MockMvcRequestBuilders.delete("/user/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
