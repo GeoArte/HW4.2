@@ -49,6 +49,19 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>1.18.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>1.18.3</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -59,4 +72,38 @@
       </plugin>
     </plugins>
   </build>
+
+  <plugin>
+    <groupId>com.dkanejs.maven.plugins</groupId>
+    <artifactId>docker-compose-maven-plugin</artifactId>
+    <version>4.0.0</version>
+    //шаг указывающий, что контейнер надо запустить
+    <executions>
+      <execution>
+        <id>up</id>
+        <phase>test-compile</phase>
+        <goals>
+          <goal>up</goal>
+        </goals>
+        <configuration>
+          //путь до файла с указанием реквизитов для запуска контейнеров
+          <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
+          <detachedMode>true</detachedMode>
+        </configuration>
+      </execution>
+      //шаг указывающий, что контейнер надо остановить
+      <execution>
+        <id>down</id>
+        <phase>post-integration-test</phase>
+        <goals>
+          <goal>down</goal>
+        </goals>
+        <configuration>
+          //путь до файла с указанием реквизитов для запуска контейнеров
+          <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
+          <detachedMode>true</detachedMode>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
 </project>
