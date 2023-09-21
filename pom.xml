@@ -67,43 +67,34 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>com.dkanejs.maven.plugins</groupId>
+        <artifactId>docker-compose-maven-plugin</artifactId>
+        <version>4.0.0</version>
+        <executions>
+          <execution>
+            <id>up</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>up</goal>
+            </goals>
+            <configuration>
+              <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
+              <detachedMode>true</detachedMode>
+            </configuration>
+          </execution>
+          <execution>
+            <id>down</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>down</goal>
+            </goals>
+            <configuration>
+              <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
+              <detachedMode>true</detachedMode>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
-
-  <plugin>
-    <groupId>com.dkanejs.maven.plugins</groupId>
-    <artifactId>docker-compose-maven-plugin</artifactId>
-    <version>4.0.0</version>
-    //шаг указывающий, что контейнер надо запустить
-    <executions>
-      <execution>
-        <id>up</id>
-        <phase>test-compile</phase>
-        <goals>
-          <goal>up</goal>
-        </goals>
-        <configuration>
-          //путь до файла с указанием реквизитов для запуска контейнеров
-          <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
-          <detachedMode>true</detachedMode>
-        </configuration>
-      </execution>
-      //шаг указывающий, что контейнер надо остановить
-      <execution>
-        <id>down</id>
-        <phase>post-integration-test</phase>
-        <goals>
-          <goal>down</goal>
-        </goals>
-        <configuration>
-          //путь до файла с указанием реквизитов для запуска контейнеров
-          <composeFile>${project.basedir}/docker-compose.yaml</composeFile>
-          <detachedMode>true</detachedMode>
-        </configuration>
-      </execution>
-    </executions>
-  </plugin>
 </project>
