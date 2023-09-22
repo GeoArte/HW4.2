@@ -1,0 +1,10 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: Skypro
+      POSTGRES_USER: Postgres
+      POSTGRES_PASSWORD: polkiklopov12
+    ports:
+      - "5432:5432"
